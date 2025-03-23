@@ -15,8 +15,10 @@ def connect_to_server(ip: str, port: int) -> None:
     while True:
         user_input = handle_user_input()
         if user_input == 1:
-            send_message(client)
+            view_chat_history(client)
         elif user_input == 2:
+            send_message(client)
+        elif user_input == 3:
             disconnect_from_server(client)
             break
 
@@ -24,7 +26,7 @@ def connect_to_server(ip: str, port: int) -> None:
 def handle_user_input() -> int:
     while True:
         try:
-            user_input = int(input("1. Send message\n2. Disconnect\n > "))
+            user_input = int(input("1. View history\n2. Send message\n3. Disconnect\n > "))
             if user_input in [1, 2]:
                 return user_input
             else:
@@ -37,10 +39,16 @@ def send_message(client: socket.socket) -> None:
     message = input("Message: ")
     client.send(message.encode())
 
+def view_chat_history(client: socket.socket) -> None:
+    message = "SEE CHAT HISTORY"
+    client.send(message.encode())
+
+    chat_history = client.recv(1024).decode()
+    print(chat_history)
 
 def disconnect_from_server(client: socket.socket) -> None:
     client.close()
 
 
 if __name__ == "__main__":
-    connect_to_server('localhost', 8080)
+    connect_to_server('localhost', 8081)

@@ -1,6 +1,8 @@
 import socket
 from threading import Thread
 
+chat_history = []
+
 def handle_client(client_socket: socket.socket, addr: tuple) -> None:
     print(f"Connection from {addr}")
     try:
@@ -8,13 +10,18 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
             message = client_socket.recv(1024).decode()
             if not message:
                 break
-            print(f"Received message: {message}")
+
+            if message == "SEE CHAT HISTORY":
+                for chat in chat_history:
+                    client_socket.send(chat.encode())
+            else:
+                chat_history.append(message)
     except ConnectionResetError:
         print(f"Connection with {addr} was reset.")
     finally:
         client_socket.close()
 
-def run_server(port: int) -> None:
+def run_server(ip: str, port: int) -> None:
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind(('localhost', port))
     server.listen(5)
@@ -26,4 +33,4 @@ def run_server(port: int) -> None:
         client_handler.start()
 
 if __name__ == "__main__":
-    run_server(8080)
+    run_server('localhost', 8081)
