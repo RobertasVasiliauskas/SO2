@@ -15,7 +15,7 @@ def connect_to_server(ip: str, port: int) -> None:
     while True:
         user_input = handle_user_input()
         if user_input == 1:
-            send_message()
+            send_message(client)
         elif user_input == 2:
             disconnect_from_server(client)
             break
@@ -33,8 +33,9 @@ def handle_user_input() -> int:
             print("Invalid input. Please enter a number.")
 
 
-def send_message():
-    pass
+def send_message(client: socket.socket) -> None:
+    message = input("Message: ")
+    client.send(message.encode())
 
 
 def disconnect_from_server(client: socket.socket) -> None:

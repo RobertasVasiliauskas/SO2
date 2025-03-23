@@ -3,7 +3,16 @@ from threading import Thread
 
 def handle_client(client_socket: socket.socket, addr: tuple) -> None:
     print(f"Connection from {addr}")
-    client_socket.close()
+    try:
+        while True:
+            message = client_socket.recv(1024).decode()
+            if not message:
+                break
+            print(f"Received message: {message}")
+    except ConnectionResetError:
+        print(f"Connection with {addr} was reset.")
+    finally:
+        client_socket.close()
 
 def run_server(port: int) -> None:
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
