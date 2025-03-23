@@ -13,6 +13,11 @@ zablokowania wątków (ang. Deadlock).
 
 ### Rozwiązanie
 
+### Wątki
+
+Każdy filozof jest reprezentowany przez osobny wątek, który wykonuje nieskończoną pętlę, w której filozof myśli bądź
+je . Wątki są tworzone za pomocą klasy `std::thread` z biblioteki `<thread>`.
+
 ### Synchronizacja dostępu do widelców za pomocą semaforów
 
 Problem został rozwiązany za pomocą **semaforów** z biblioteki `<semaphore>`, które zapewniają synchronizację dostępu do
@@ -29,8 +34,8 @@ stany:
 1. **Filozof myśli**, co symuluje 1 sekundowe opóźnienie w działaniu.
 2. **Próbuje podnieść dwa widelce** – najpierw ten po swojej lewej stronie, potem po prawej.
 
-   - Jeśli oba są dostępne, filozof przechodzi do jedzenia.
-   - Jeśli choć jeden jest zajęty, filozof czeka na jego zwolnienie.
+    - Jeśli oba są dostępne, filozof przechodzi do jedzenia.
+    - Jeśli choć jeden jest zajęty, filozof czeka na jego zwolnienie.
 
 3. **Filozof zaczyna jeść**, trzymając w rękach oba widelce. Symuluje to 5 sekundowe opóźnienie w działaniu.
 4. **Po zakończeniu jedzenia odkłada widelce**, czyli zwalnia semafory, aby inne wątki mogły z nich skorzystać.
@@ -83,6 +88,7 @@ make
 ```
 
 ### Usuwanie plików wykonywalnych
+
 ```sh
 make clean
 ```
