@@ -1,5 +1,7 @@
 #include "philosopher.h"
 
+#include <iostream>
+
 std::mutex coutMutex;
 
 Philosopher::Philosopher(const int id, std::vector<std::unique_ptr<std::counting_semaphore<1>>>& forks)
