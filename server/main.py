@@ -13,7 +13,10 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
 
             if message == "SEE CHAT HISTORY":
                 for chat in chat_history:
+                    print(chat)
                     client_socket.send(chat.encode())
+
+                client_socket.send("END CHAT HISTORY".encode())
             else:
                 chat_history.append(message)
     except ConnectionResetError:
@@ -33,4 +36,4 @@ def run_server(ip: str, port: int) -> None:
         client_handler.start()
 
 if __name__ == "__main__":
-    run_server('localhost', 8081)
+    run_server('localhost', 8083)
