@@ -21,10 +21,11 @@ def handle_client(client_socket: socket.socket, addr: tuple) -> None:
             if not message:
                 break
 
-            if message == "SEE CHAT HISTORY":
+            if message == "history":
                 with lock:
 
-                    history = "\n".join(chat_history) + "\nEND CHAT HISTORY"
+                    history = "\n".join(chat_history) + "\n"
+                    print("Sending chat history to client")
                     client_socket.send(history.encode())
 
             else:
@@ -51,4 +52,4 @@ def run_server(ip: str, port: int) -> None:
 
 
 if __name__ == "__main__":
-    run_server('localhost', 8080)
+    run_server('localhost', 8081)

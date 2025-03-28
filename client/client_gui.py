@@ -33,6 +33,8 @@ class ChatClientGUI:
 
         threading.Thread(target=self.receive_messages, daemon=True).start()
 
+        self.init_history()
+
     def receive_messages(self):
         while True:
             try:
@@ -49,6 +51,15 @@ class ChatClientGUI:
         self.chat_area.config(state='disabled')
         self.chat_area.see(tk.END)
 
+    def init_history(self):
+        threading.Thread(target=self.fetch_history, daemon=True).start()
+
+    def fetch_history(self):
+        self.client_socket.send("history".encode())
+        history = self.client_socket.recv(1024).decode()
+        self.display_message(history)
+        return
+
     def send_message(self, event=None):
         message = f"{self.username}: {self.entry_field.get().strip()}"
         if message:
@@ -59,10 +70,7 @@ class ChatClientGUI:
     def prompt_username() -> str:
         return tk.simpledialog.askstring("Username", "Enter your username:")
 
-def main():
+if __name__ == "__main__":
     root = tk.Tk()
     app = ChatClientGUI(root, 'localhost', 8080)
     root.mainloop()
-
-if __name__ == "__main__":
-    main()
