@@ -32,7 +32,7 @@ class ServerGui:
         self.log_area.pack(padx=10, pady=10)
         self.log_area.config(state="disabled")
 
-        self.clear_history = tk.Button(self.master, text="Clear History", command=lambda: self.chat_history.clear())
+        self.clear_history = tk.Button(self.master, text="Clear History", command=lambda: (self.chat_history.clear(), self.log("History cleared")))
         self.clear_history.pack(side=tk.BOTTOM)
 
         self.button_clients = tk.Button(self.master, text="Clients", command=self.show_clients)
@@ -122,8 +122,7 @@ class ServerGui:
         except ConnectionResetError:
             print(f"Connection with {addr} was reset.")
         finally:
-            self.clients.remove(client_socket)
-            client_socket.close()
+            self.disconnect_client(client_socket)
 
     @staticmethod
     def prompt_server():
@@ -137,7 +136,6 @@ class ServerGui:
                 client.send(message.encode())
 
     def parse_ban_list(self):
-
         if not os.path.exists("banned.txt"):
             with open("banned.txt", "w") as f:
                 f.write("")

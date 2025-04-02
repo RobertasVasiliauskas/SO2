@@ -41,6 +41,10 @@ class ChatClientGUI:
                 data = self.client_socket.recv(1024).decode()
                 if not data:
                     break
+
+                if data == "You are disconnected by the server":
+                    self.client_socket.close()
+
                 self.display_message(data)
             except ConnectionResetError:
                 break
